@@ -50,7 +50,7 @@ TNodo.prototype.setPadre = function (padre) {
   this.miPadre = padre
 }
 
-/* DIOS NO ENTIENDO NADA */
+/* VALE YA */
 TNodo.prototype.draw = function () {
   if (this.miEntidad != null) {
     this.miEntidad.beginDraw()

@@ -1,13 +1,17 @@
+var popInvalido = 'PopMatrix invalido'
+
 /** CLASE TENTIDAD **/
 function TEntidad () {
   /* Atributos */
-  TEntidad.mvMatrixStack = []
-  TEntidad.mvMatrix = mat4.create()
-
-  /* Métodos virtuales. ES COMO UNA CLASE ABSTRACTA DE JAVA! NO SE IMPLEMENTAN */
-  TEntidad.prototype.beginDraw = function () { }
-  TEntidad.prototype.endDraw = function () { }
+  if (TEntidad.mvMatrix === undefined)
+    TEntidad.mvMatrix = mat4.create()
+  if (TEntidad.mvMatrixStack === undefined)
+    TEntidad.mvMatrixStack = new Array
 }
+
+/* Métodos virtuales. ES COMO UNA CLASE ABSTRACTA DE JAVA! NO SE IMPLEMENTAN */
+TEntidad.prototype.beginDraw = function () { }
+TEntidad.prototype.endDraw = function () { }
 /** FIN CLASE TENTIDAD **/
 /** ****************************************************************************/
 
@@ -26,7 +30,7 @@ function TTransform () {
   /* con mvPopMatrix desapilamos la matriz */
   mvPopMatrix = function () {
     if (TEntidad.mvMatrixStack.length === 0) {
-      throw 'PopMatrix invalido'
+      throw popInvalido
     }
     TEntidad.mvMatrix = TEntidad.mvMatrixStack.pop()
   }
@@ -36,7 +40,7 @@ TTransform.prototype = new TEntidad()
 TTransform.prototype.constructor = TTransform
 
 TTransform.prototype.identidad = function () {
-    mat4.identity(this.miMatriz)
+  mat4.identity(this.miMatriz)
 }
 
 TTransform.prototype.cargar = function (nuevaMatriz) {
@@ -59,7 +63,7 @@ TTransform.prototype.matrizPorVector = function () {
 }
 
 TTransform.prototype.matrizPorMatriz = function (matriz) {
-  mat4.multiply(this.miMatriz,this.miMatriz,matriz)
+  mat4.multiply(this.miMatriz, this.miMatriz, matriz)
 }
 
 TTransform.prototype.invertir = function () {
@@ -196,8 +200,7 @@ TCamara.prototype.setPerspectiva = function (fovy, aspect, cerca, lejos) {
   this.cercano = cerca
   this.lejano = lejos
 
-
-    mat4.perspective(this.miProyeccion, this.fovy, this.aspect, this.cercano, this.lejano)
+  mat4.perspective(this.miProyeccion, this.fovy, this.aspect, this.cercano, this.lejano)
 }
 
 TCamara.prototype.setParalela = function (izquierda, derecha, abajo, arriba, cerca, lejos) {
@@ -226,15 +229,27 @@ TCamara.prototype.endDraw = function () {
 /** ****************************************************************************/
 
 /** CLASE TMALLA **/
-function TMalla () {
-  TEntidad.call(this) // Con esto se llama al constructor del padre
+/** OJO! -> Se puede cambiar el contexto por la var TEntidad **/
+function TMalla (fichero, contexto) {
+  TEntidad.call(this)
+  this.miRecurso = null
+
+  if (fichero !== undefined && contexto !== undefined) {
+    this.cargarMalla(fichero, contexto)
+  }
 }
 
 TMalla.prototype = new TEntidad()
 TMalla.prototype.constructor = TMalla
 
-TCamara.prototype.cargarMalla = function (fichero) {
+TCamara.prototype.cargarMalla = function (fichero, contexto) {
+  if (this.miRecurso == null) {
+    this.miRecurso = new TRecursoMalla()
+  }
 
+  this.miRecurso.cargarFichero(fichero, contexto)
+
+  return this.miRecurso
 }
 
 TCamara.prototype.beginDraw = function () {

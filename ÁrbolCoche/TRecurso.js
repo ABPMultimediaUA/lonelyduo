@@ -29,7 +29,6 @@ TGestorRecursos.prototype.getRecurso = function (nombre) {
 /** ****************************************************************************/
 
 /** CLASE TRECURSO **/
-
 function TRecurso () {
   this.miNombre
 }
@@ -92,37 +91,36 @@ function draw (contexto, objetoData) {
 }
 
 function initBuffers (gl, objetoData) {
-    if(objetoData.vertexNormals != null)
-    {
-        objetoVertexNormalBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, objetoVertexNormalBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(objetoData.vertexNormals), gl.STATIC_DRAW);
-        objetoVertexNormalBuffer.itemSize = 3;
-        objetoVertexNormalBuffer.numItems = objetoData.vertexNormals.length / 3;
-    }
+  var objetoVertexNormalBuffer = gl.createBuffer()
+  if (objetoData.vertexNormals != null) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, objetoVertexNormalBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(objetoData.vertexNormals), gl.STATIC_DRAW)
+    objetoVertexNormalBuffer.itemSize = 3
+    objetoVertexNormalBuffer.numItems = objetoData.vertexNormals.length / 3
+  }
 
-    if(objetoData.vertexTextureCoords != null)
-    {
-        objetoVertexTextureCoordBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, objetoVertexTextureCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(objetoData.vertexTextureCoords), gl.STATIC_DRAW);
-        objetoVertexTextureCoordBuffer.itemSize = 2;
-        objetoVertexTextureCoordBuffer.numItems = objetoData.vertexTextureCoords.length / 2;
-    }
+  var objetoVertexTextureCoordBuffer = gl.createBuffer()
 
-    objetoVertexPositionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, objetoVertexPositionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(objetoData.vertexPositions), gl.STATIC_DRAW);
-    objetoVertexPositionBuffer.itemSize = 3;
-    objetoVertexPositionBuffer.numItems = objetoData.vertexPositions.length / 3;
+  if (objetoData.vertexTextureCoords != null) {
+    gl.bindBuffer(gl.ARRAY_BUFFER, objetoVertexTextureCoordBuffer)
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(objetoData.vertexTextureCoords), gl.STATIC_DRAW)
+    objetoVertexTextureCoordBuffer.itemSize = 2
+    objetoVertexTextureCoordBuffer.numItems = objetoData.vertexTextureCoords.length / 2
+  }
 
-    objetoVertexIndexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objetoVertexIndexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(objetoData.indices), gl.STATIC_DRAW);
-    objetoVertexIndexBuffer.itemSize = 1;
-    objetoVertexIndexBuffer.numItems = objetoData.indices.length;
+  var objetoVertexPositionBuffer = gl.createBuffer()
+  gl.bindBuffer(gl.ARRAY_BUFFER, objetoVertexPositionBuffer)
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(objetoData.vertexPositions), gl.STATIC_DRAW)
+  objetoVertexPositionBuffer.itemSize = 3
+  objetoVertexPositionBuffer.numItems = objetoData.vertexPositions.length / 3
 
-    document.getElementById("loadingtext").style.display = 'none';
+  var objetoVertexIndexBuffer = gl.createBuffer()
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, objetoVertexIndexBuffer)
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint32Array(objetoData.indices), gl.STATIC_DRAW)
+  objetoVertexIndexBuffer.itemSize = 1
+  objetoVertexIndexBuffer.numItems = objetoData.indices.length
+
+  document.getElementById('loadingtext').style.display = 'none'
 }
 /** FIN CLASE TRECURSOMALLA **/
 /** ****************************************************************************/

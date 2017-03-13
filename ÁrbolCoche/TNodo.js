@@ -1,79 +1,100 @@
 /** CLASE TNODO **/
-function TNodo () {
-  /* Atributos */
-  /** si los declaras con VAR haces atributos privados, si los declaras con THIS publicos **/
-  this.miEntidad;
-  this.misHijos = [];
-  this.miPadre = this;
+function TNodo() {
+    /* Atributos */
+    /** si los declaras con VAR haces atributos privados, si los declaras con THIS publicos **/
+    this.miEntidad = null;
+    this.misHijos = [];
+    this.miPadre = this;
+    if(TNodo.registroLuces == undefined)
+        TNodo.registroLuces = [];
+    if(TNodo.registroCamaras == undefined)
+        TNodo.registroCamaras = [];
 
-  // atributos para imprimir el arbol por pantalla
-  this.miNombre = '';
-  TNodo.nivel = 0
+    // atributos para imprimir el arbol por pantalla
+    this.miNombre ="";
+    TNodo.nivel = 0;
 }
 
 /* Métodos */ /** si queremos un método privado se declara sin THIS */
-/* Para crear metodos de una de una clase hemos de hacer referencia a la clase con TNodo.prototype y el nombre */
-TNodo.prototype.addHijo = function (nuevoNodo) {
-  this.misHijos.push(nuevoNodo); // el nuevo nodo es el pasado por parametro
-  nuevoNodo.setPadre(this); // el padre sera el nuevo pasado por parametro
+TNodo.prototype.addHijo = function(nuevoNodo)
+{
+    this.misHijos.push(nuevoNodo);
+    nuevoNodo.setPadre(this);
 
-  return this.misHijos.length; // devuelvo el tamaño de los hijos
+    return this.misHijos.length;
 };
 
-TNodo.prototype.remHijo = function (nodo) {
-  var aux = this.misHijos.indexOf(nodo); // me guardo el nodo a borrar
-  if (aux !== -1) {
-    this.misHijos.splice(aux, 1); // con splice coloco el nodo en la posicion 1
-  }
+TNodo.prototype.remHijo = function(nodo)
+{
+    var aux = this.misHijos.indexOf(nodo);
+    if(aux != -1)
+        this.misHijos.splice(aux, 1);
 
-  return this.misHijos.length
+    return this.misHijos.length;
 };
 
-TNodo.prototype.setEntidad = function (nuevaEntidad) {
-  if (nuevaEntidad != null) {
-    this.miEntidad = nuevaEntidad;
-    return true
-  } else {
-    return false
-  }
+TNodo.prototype.setEntidad = function(nuevaEntidad)
+{
+    if(nuevaEntidad != null)
+    {
+        this.miEntidad = nuevaEntidad;
+
+        if(this.miEntidad instanceof TCamara)
+        {
+            TNodo.registroCamaras.push(this);
+        }
+        else if(this.miEntidad instanceof TLuz)
+        {
+            TNodo.registroLuces.push(this);
+        }
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 };
 
-TNodo.prototype.getEntidad = function () {
-  return this.miEntidad
+TNodo.prototype.getEntidad = function()
+{
+    return this.miEntidad;
 };
 
-TNodo.prototype.getPadre = function () {
-  return this.miPadre
+TNodo.prototype.getPadre = function()
+{
+    return this.miPadre;
 };
 
-TNodo.prototype.setPadre = function (padre) {
-  this.miPadre = padre
+TNodo.prototype.setPadre = function(padre)
+{
+    this.miPadre = padre;
 };
 
-/* VALE YA */
-TNodo.prototype.draw = function () {
-  if (this.miEntidad != null) {
-    this.miEntidad.beginDraw();
-    TNodo.nivel++
-  }
+TNodo.prototype.draw = function()
+{
+    console.log("draw");
 
-  console.log('Soy: ' + this.miNombre + '|| En el nivel: ' + TNodo.nivel + '|| Mi padre es: ' + this.getPadre().getNombre());
+    if(this.miEntidad!=null) this.miEntidad.beginDraw(); TNodo.nivel++;
 
-  for (var i = 0; i < this.misHijos.length; i++) {
-    this.misHijos[i].draw()
-  }
+    //console.log("Soy: "+this.miNombre+"|| En el nivel: "+TNodo.nivel+"|| Mi padre es: "+this.getPadre().getNombre());
 
-  if (this.miEntidad != null) {
-    this.miEntidad.endDraw(); TNodo.nivel--;
-  }
+
+    for(var i=0; i<this.misHijos.length; i++)
+    {
+        this.misHijos[i].draw(); //Hay que comprobar que el hijo no sea camara o luz
+    }
+    if(this.miEntidad!=null) this.miEntidad.endDraw(); TNodo.nivel--;
 };
 
-TNodo.prototype.setNombre = function (nombre) {
-  this.miNombre = nombre
+TNodo.prototype.setNombre = function(nombre)
+{
+    this.miNombre = nombre;
 };
 
-TNodo.prototype.getNombre = function () {
-  return this.miNombre
+TNodo.prototype.getNombre = function()
+{
+    return this.miNombre;
 };
 /** FIN CLASE TNODO **/
 /** ****************************************************************************/

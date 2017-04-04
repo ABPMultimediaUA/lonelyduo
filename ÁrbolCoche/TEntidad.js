@@ -1,4 +1,7 @@
+var popInvalido = 'PopMatrix invalido'
+
 /** CLASE TENTIDAD **/
+<<<<<<< HEAD
 function TEntidad() {
     /* Atributos */
 
@@ -6,6 +9,57 @@ function TEntidad() {
         TEntidad.mvMatrix = mat4.create();
     if(TEntidad.mvMatrixStack == undefined)
         TEntidad.mvMatrixStack = [];
+=======
+function TEntidad () {
+  /* Atributos */
+  TEntidad.mvMatrixStack = []
+  TEntidad.mvMatrix = mat4.create()
+
+  /* Métodos virtuales. ES COMO UNA CLASE ABSTRACTA DE JAVA! NO SE IMPLEMENTAN */
+  TEntidad.prototype.beginDraw = function () { }
+  TEntidad.prototype.endDraw = function () { }
+}
+/** FIN CLASE TENTIDAD **/
+/** ****************************************************************************/
+
+/** CLASE TTRANSFORM **/
+function TTransform () {
+  TEntidad.call(this) // Con esto se llama al constructor del padre y se hace la herencia
+  this.miMatriz = mat4.create()
+
+  /* con mvPushMatrix apilamos la matriz */
+  mvPushMatrix = function () {
+    var copy = mat4.create()
+    mat4.copy(copy, TEntidad.mvMatrix)
+    TEntidad.mvMatrixStack.push(copy)
+  }
+
+  /* con mvPopMatrix desapilamos la matriz */
+  mvPopMatrix = function () {
+    if (TEntidad.mvMatrixStack.length === 0) {
+      throw popInvalido
+    }
+    TEntidad.mvMatrix = TEntidad.mvMatrixStack.pop()
+  }
+}
+
+TTransform.prototype = new TEntidad()
+TTransform.prototype.constructor = TTransform
+
+TTransform.prototype.identidad = function () {
+  mat4.identity(this.miMatriz)
+}
+
+TTransform.prototype.cargar = function (nuevaMatriz) {
+  if (nuevaMatriz != null) {
+    this.miMatriz = mat4.clone(nuevaMatriz)
+  }
+  console.log('Matriz cargada: ' + this.miMatriz)
+}
+
+TTransform.prototype.transponer = function () {
+  console.log('antes de transponer:' + this.miMatriz)
+>>>>>>> master
 
 }
     /* Métodos */
@@ -16,6 +70,7 @@ function TEntidad() {
 /** ****************************************************************************/
 
 
+<<<<<<< HEAD
 /** CLASE TTRANSFORM **/
 function TTransform()
 {
@@ -36,6 +91,10 @@ function TTransform()
         }
         TEntidad.mvMatrix = TEntidad.mvMatrixStack.pop();
     }
+=======
+TTransform.prototype.matrizPorMatriz = function (matriz) {
+  mat4.multiply(this.miMatriz, this.miMatriz, matriz)
+>>>>>>> master
 }
 TTransform.prototype = new TEntidad();
 TTransform.prototype.constructor = TTransform;
@@ -194,6 +253,7 @@ TLuz.prototype.endDraw = function()
 /** ****************************************************************************/
 
 
+<<<<<<< HEAD
 
 /** CLASE TCAMARA **/
 function TCamara()
@@ -216,6 +276,31 @@ function TCamara()
         this.setPerspectiva();
     else
         this.setParalela();
+=======
+  mat4.perspective(this.miProyeccion, this.fovy, this.aspect, this.cercano, this.lejano)
+}
+
+TCamara.prototype.setParalela = function (izquierda, derecha, abajo, arriba, cerca, lejos) {
+  this.esPerspectiva = false
+
+  this.cercano = cerca
+  this.lejano = lejos
+  this.izquierda = izquierda
+  this.derecha = derecha
+  this.abajo = abajo
+  this.arriba = arriba
+
+  // LOCURA
+  mat4.ortho(this.miProyeccion, this.izquierda, this.derecha, this.abajo, this.arriba, this.cercano, this.lejano)
+}
+
+TCamara.prototype.beginDraw = function () {
+
+}
+
+TCamara.prototype.endDraw = function () {
+
+>>>>>>> master
 }
 
 TCamara.prototype = new TEntidad();

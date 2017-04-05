@@ -1,5 +1,4 @@
 /** CLASE TENTIDAD **/
-var mat4 = require("./toji-gl-matrix-21bd188/src/gl-matrix/mat4.js");
 var popInvalido = 'PopMatrix invalido';
 
 function TEntidad () {

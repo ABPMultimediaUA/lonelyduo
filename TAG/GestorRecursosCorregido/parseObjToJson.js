@@ -1,3 +1,4 @@
+
 function abrirArchivo(name, callbackBueno, callbackMalo)
 {
     var xhttp = new XMLHttpRequest();
